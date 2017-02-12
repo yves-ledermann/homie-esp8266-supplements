@@ -1,5 +1,8 @@
 #pragma once
 
-#include <homie.h>
+#include <Arduino.h>
+#include <Homie.h>
+#include "../../src/config.h"
 
-void welcome()
+
+void welcome();
