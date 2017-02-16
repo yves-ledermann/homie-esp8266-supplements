@@ -10,26 +10,41 @@ class ds18b20MultiNode: public HomieNode {
 private:
   String _name;
 	int _PinNumber;
-
-	int sensorsonBus;
+  bool _debug = true;
+  uint8_t _precision = TEMPERATURE_PRECISION;
+  uint16_t _tempInterval = 15000UL;
 	unsigned long lastLoopSensor = 0;
-	DallasTemperature sensor;
+  DallasTemperature sensor;
+  OneWire oneWire;
+	int sensorsonBus;
+
+  int state = 10;
+  int stateold = state;
+
 	char* getAddressReadable(uint8_t Address[8]);
-	char adressReadable[24];
-	uint8_t Address[8];
+	char adressReadable[20];
+
+  // To store the current time for delays
+  uint32_t tsTemp;
+
+  // Struct Array for DS18B20 Adress / Temp
+  typedef struct
+  {
+   uint8_t Address[8];
+   float Temp = -127.0;
+  }  tempSensor;
+  tempSensor sensorValues[MaxSensorCount];
+
+
 public:
-	ds18b20MultiNode(const char* name, int PinNumber);
-	void setup();
+	ds18b20MultiNode(const char* name, const uint8_t PinNumber);
+
+  void setup();
 	void loop();
 
-	// Struct Array for DS18B20 Adress / Temp
-		typedef struct
-		 {
-			uint8_t Address[8];
-			float Temp;
-		 }  tempSensor;
-		 tempSensor sensorValues[MaxSensorCount];
-
-
+  float getTemperature(int SensorNumber);
+  void setDebug(bool debug);
+  void setInterval(uint16_t interval);
+  void setResolution(uint8_t precision);
 
 };
