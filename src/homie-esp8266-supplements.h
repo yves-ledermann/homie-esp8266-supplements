@@ -2,5 +2,6 @@
 
 #include "welcome.hpp"
 #include "ota.hpp"
-#include "ds18b20MultiNode.hpp"
-#include "DYP-ME007Y-Ultrasonic-Sensor-Node.hpp"
+#include "Node_ds18b20Multi.hpp"
+#include "Node_UltrasonicSerial.hpp"
+#include "Node_AnalogIn.hpp"
