@@ -6,7 +6,7 @@
 #define MaxSensorCount 10  // max num of sensors to be defined per Bus
 #define TEMPERATURE_PRECISION 12
 
-class ds18b20MultiNode: public HomieNode {
+class Node_ds18b20Multi: public HomieNode {
 private:
   String _name;
 	int _PinNumber;
@@ -37,7 +37,7 @@ private:
 
 
 public:
-	ds18b20MultiNode(const char* name, const uint8_t PinNumber);
+	Node_ds18b20Multi(const char* name, const uint8_t PinNumber);
 
   void setup();
 	void loop();
