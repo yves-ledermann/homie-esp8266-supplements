@@ -21,7 +21,8 @@
       "platforms": "espressif8266",
   "dependencies": [
     {
-       "name": "Homie",
+      "name": "Homie",
+      "version": "2.0.0"
        "authors": "Marvin Roger",
        "frameworks": "arduino"
      }
