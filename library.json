@@ -23,10 +23,9 @@
   "dependencies": [
     {
       "name": "Homie",
-      "version": "2.0.0",
+      "version": "develop",
       "authors": "Marvin Roger",
       "frameworks": "arduino",
-      "platforms": "espressif8266"
      }
 
   ]
