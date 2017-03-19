@@ -1,32 +1,25 @@
 {
-      "name": "homie-esp8266-supplements",
-      "keywords": "Homie, extensions, sensor, temperature",
-      "description": "Collection of Nodes and additional code for the Homie-ESP8266 library",
-      "license": "MIT",
-      "include": "src",
-      "examples": "examples/*.ino",
-      "version": "0.0.1",
-      "authors":
-      {
-          "name": "Yves Ledermann",
-          "email": "yves@laedis.ch",
-          "url": "https://yves.laedis.ch",
-          "maintainer": true
-      },
-      "repository":
-      {
-          "type": "git",
-          "url": "https://github.com/yves-ledermann/homie-esp8266-supplements/"
-      },
-      "frameworks": "arduino",
-      "platforms": "espressif8266",
-  "dependencies": [
-    {
-      "name": "Homie",
-      "version": "develop",
-      "authors": "Marvin Roger",
-      "frameworks": "arduino",
-     }
-
-  ]
+	"name": "homie-esp8266-supplements",
+	"version": "0.0.1",
+	"keywords": "Homie, extensions, sensor, temperature",
+	"description": "Collection of Nodes and additional code for the Homie-ESP8266 library",
+	"license": "MIT",
+	"authors": {
+		"name": "Yves Ledermann",
+		"email": "yves@laedis.ch",
+		"url": "https://yves.laedis.ch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yves-ledermann/homie-esp8266-supplements.git",
+		"branch": "master"
+	},
+	"frameworks": "arduino",
+	"platforms": "espressif8266",
+	"dependencies": [{
+		"name": "Homie",
+    "version": "https://github.com/marvinroger/homie-esp8266.git#develop"
+	}],
+	"examples": "examples/*.ino",
+	"include": "src"
 }
