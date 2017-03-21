@@ -28,13 +28,6 @@ void Node_PulseCounter::loop() {
 		lastLoopUpdate = millis();
 	}
 
-/*
-	if (millis() - lastLoopSensor >= _Interval) {
-		Homie.getLogger() << "[Ultrasonic_Serial_Node-" << _name << "]" << _distance << endl;
-		setProperty("Distance").send(String(_distance).c_str());
-		lastLoopSensor = millis();
-	}
-*/
 
 } // loop
 

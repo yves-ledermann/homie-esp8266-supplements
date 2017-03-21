@@ -15,21 +15,28 @@ WHITE = Signal
 
 
 #include <Homie.hpp>
+#include <IRremoteESP8266.h>
 
-class Node_SolarWaterSens: public HomieNode {
+class Node_SerialSolarWaterSensor: public HomieNode {
 private:
   String _name;
 	int _PinNumber;
   bool _debug = true;
-  uint16_t _Interval = 15000UL;
+  uint16_t _Interval = 5000UL;
 	uint32_t lastLoopUpdate = 0;
 
+  IRrecv irrecv;
+  decode_results results;
+
+  int state = 10;
+  int stateold = state;
+  // To store the current time for delays
+  uint32_t tstate;
+
   void update();
-  int expectPulse(int val);
-  bool readTempNLevelSensor(char _PinNumber, char &temp, char &level);
-  void handleSensorInterrupt();
+
 public:
-	Node_SolarWaterSens(const char* name, const uint8_t PinNumber);
+	Node_SerialSolarWaterSensor(const char* name, const uint8_t PinNumber);
 
   void setup();
 	void loop();

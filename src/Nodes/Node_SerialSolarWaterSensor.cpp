@@ -1,46 +1,64 @@
 #include "Node_SerialSolarWaterSensor.hpp"
 
-
-#define TIMEOUT 50000
-#define MARK_HEADER 7000
-#define SPACE_HEADER 3000
-#define MARK 500
-#define SPACE_ONE 1500
-#define SPACE_ZERO 600
-
-Node_SolarWaterSens::Node_SolarWaterSens (const char* name, const uint8_t PinNumber) :
+Node_SerialSolarWaterSensor::Node_SerialSolarWaterSensor (const char* name, const uint8_t PinNumber) :
 		HomieNode("Sensor", "SerialSolarWater",
 			[](String property, HomieRange range, String value) { return false; }),
 		_name(name),
-		_PinNumber(PinNumber)
+		_PinNumber(PinNumber),
+		irrecv(PinNumber)
 {
-  advertise(String("Node_SolarWaterSens" + _name).c_str());
+  advertise(String("Node_SerialSolarWaterSensor" + _name).c_str());
 
   if (_debug) {
-		Homie.getLogger() << "[Node_SolarWaterSens-" << _name << "] constructor finished" << endl;
+		Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] constructor finished" << endl;
 	}
 }
 
-void Node_SolarWaterSens::setup() {
+void Node_SerialSolarWaterSensor::setup() {
 	pinMode(_PinNumber, INPUT);
-	Homie.getLogger() << "[Node_SolarWaterSens" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
+	Homie.getLogger() << "[Node_SerialSolarWaterSensor" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
 }
 
-void Node_SolarWaterSens::loop() {
+void Node_SerialSolarWaterSensor::loop() {
 
 	if (millis() < lastLoopUpdate) lastLoopUpdate = 0; //Correct the 29day overflow
 
 	if (millis() - lastLoopUpdate >= _Interval) {
-		Node_SolarWaterSens::update();
-		lastLoopUpdate = millis();
 
-		char temp,level;
-		if(Node_SolarWaterSens::readTempNLevelSensor(_PinNumber, temp, level)){
 
-			Serial.print(temp,DEC);Serial.print("c ");Serial.println(level,DEC);
+		// Log State Changes
+		if (state != stateold) {
+			if (_debug) {
+				Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] loopStateMachine State: "<< state << endl;
+			}
+			stateold = state;
 		}
 
+
+		switch (state) {
+	    case 10:    // start the receiver
+				Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] update" << endl;
+				irrecv.enableIRIn(); // Start the receiver
+				irrecv.resume();
+				tstate = millis();
+				state = 20;
+	      break;
+	    case 20:    //
+				if (irrecv.decode(&results)) {
+			    Serial.println(results.value, HEX);
+			    irrecv.disableIRIn(); // disableIRIn
+					state = 30;
+			  }
+	      break;
+			case 30:
+					lastLoopUpdate = millis();
+					state = 10;
+				break;
+	  }
+
+
 	}
+
 
 
 /*
@@ -53,28 +71,24 @@ void Node_SolarWaterSens::loop() {
 
 } // loop
 
-void Node_SolarWaterSens::setDebug(bool debug) {
+void Node_SerialSolarWaterSensor::setDebug(bool debug) {
   _debug = debug;
 }
 
-void Node_SolarWaterSens::setInterval(uint16_t interval) {
+void Node_SerialSolarWaterSensor::setInterval(uint16_t interval) {
 	_Interval = interval * 1000UL;
 }
 
-void Node_SolarWaterSens::update(){
+void Node_SerialSolarWaterSensor::update(){
+
+	//char temp,level;
+	//Serial.print(temp,DEC);Serial.print("c ");Serial.println(level,DEC);
 }
 
-
-int Node_SolarWaterSens::expectPulse(int val){
-  unsigned long t=micros();
-  while(digitalRead(_PinNumber)==val){
-    if( (micros()-t)>TIMEOUT ) return 0;
-  }
-  return micros()-t;
-}
+/*
 
 // temp in celsious and level goes from 0 to 3
-bool Node_SolarWaterSens::readTempNLevelSensor(char _PinNumber, char &temp, char &level){
+bool Node_SerialSolarWaterSensor::readTempNLevelSensor(char _PinNumber, char &temp, char &level){
    byte data[5]={0,0,0,0,0};
    unsigned long val1;
    unsigned long st=micros();
@@ -121,11 +135,11 @@ bool Node_SolarWaterSens::readTempNLevelSensor(char _PinNumber, char &temp, char
 
 // From comments
 
-void Node_SolarWaterSens::handleSensorInterrupt() {
+void Node_SerialSolarWaterSensor::handleSensorInterrupt() {
 /* This routine has been optimized to just capture the part of the packet
 that has the temp & level
 On averages it uses 550 us per second
-*/
+
 static unsigned int duration;
 static unsigned long lastTime;
 static char c=15; //Current bit
@@ -167,3 +181,4 @@ levelWH=(wh_data[2] & 0x0F);
 lastTime = time;
 // count+=micros()-time;
 }
+*/

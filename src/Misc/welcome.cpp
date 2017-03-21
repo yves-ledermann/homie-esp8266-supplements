@@ -6,9 +6,7 @@
 
 void welcome() {
 
-    delay(2000);
-    Serial.printf("%s %s\n", (char *) APP_NAME, (char *) APP_VERSION);
-    Serial.printf("%s\n%s\n\n", (char *) APP_AUTHOR, (char *) APP_WEBSITE);
+    delay(1000);
     Serial.printf("Device: %s\n", (char *) WiFi.hostname().c_str());
     Serial.printf("ChipID: %06X\n", ESP.getChipId());
     Serial.printf("Last reset reason: %s\n", (char *) ESP.getResetReason().c_str());

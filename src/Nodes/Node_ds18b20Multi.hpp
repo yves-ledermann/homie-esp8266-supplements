@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Homie.hpp>
-#include <OneWire.h>
+//#include <OneWire.h>
 #include <DallasTemperature.h>
 #define MaxSensorCount 10  // max num of sensors to be defined per Bus
 #define TEMPERATURE_PRECISION 12

@@ -2,11 +2,10 @@
 #define SRC_OTA_H
 
 
-#include "../../src/config.h"
 #include <Homie.h> // used for logger
 #include <ArduinoOTA.h>
 
-void otaSetup();
+void otaSetup(uint16_t port, const char *password);
 
 void otaLoop();
 

@@ -4,11 +4,11 @@
 // OTA
 // -----------------------------------------------------------------------------
 
-void otaSetup() {
+void otaSetup(uint16_t port, const char *password) {
 
-    ArduinoOTA.setPort(OTA_PORT);
+    ArduinoOTA.setPort(port);
 		ArduinoOTA.setHostname(WiFi.hostname().c_str()); 	// Hostname defaults to esp8266-[ChipID]
-		ArduinoOTA.setPassword((const char *) OTA_PASS);
+		ArduinoOTA.setPassword((const char *) "test");
 
     ArduinoOTA.onStart([]() {
       Homie.getLogger() << "[OTA] Start" << endl ;
