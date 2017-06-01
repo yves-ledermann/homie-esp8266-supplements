@@ -7,7 +7,8 @@ Node_PulseCounter::Node_PulseCounter(const char* name, const uint8_t PinNumber) 
 		_name(name),
 		_PinNumber(PinNumber)
 {
-  advertise(String("Node_PulseCounter_" + _name).c_str());
+	anchor = this;
+	advertise(String("Node_PulseCounter_" + _name).c_str());
 
   if (_debug) {
 		Homie.getLogger() << "[Node_PulseCounter-" << _name << "] constructor finished" << endl;
@@ -16,7 +17,8 @@ Node_PulseCounter::Node_PulseCounter(const char* name, const uint8_t PinNumber) 
 
 void Node_PulseCounter::setup() {
 	pinMode(_PinNumber, INPUT_PULLUP);
-	Homie.getLogger() << "[Node_PulseCounter" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
+	attachInterrupt(_PinNumber, Node_PulseCounter::marshall, FALLING);
+	Homie.getLogger() << "[Node_PulseCounter-" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
 }
 
 void Node_PulseCounter::loop() {
@@ -39,5 +41,16 @@ void Node_PulseCounter::setInterval(uint16_t interval) {
 	_Interval = interval * 1000UL;
 }
 
-void Node_PulseCounter::update(){
+void Node_PulseCounter::update() {
+	if (_debug) {
+		Homie.getLogger() << "[Node_PulseCounter-" << _name << "] update: "<< pulseCount << "\n"<< endl;
+	}
 }
+
+void Node_PulseCounter::isr() {
+      pulseCount++;
+    }
+void Node_PulseCounter::marshall() {
+  anchor->isr();
+}
+Node_PulseCounter* Node_PulseCounter::anchor = NULL;
