@@ -16,15 +16,14 @@ Node_SerialSolarWaterSensor::Node_SerialSolarWaterSensor (const char* name, cons
 
 void Node_SerialSolarWaterSensor::setup() {
 	pinMode(_PinNumber, INPUT);
+	irrecv.enableIRIn(); // Start the receiver
 	Homie.getLogger() << "[Node_SerialSolarWaterSensor" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
 }
 
 void Node_SerialSolarWaterSensor::loop() {
-
+long unsigned int result;
 	if (millis() < lastLoopUpdate) lastLoopUpdate = 0; //Correct the 29day overflow
-
 	if (millis() - lastLoopUpdate >= _Interval) {
-
 
 		// Log State Changes
 		if (state != stateold) {
@@ -38,26 +37,69 @@ void Node_SerialSolarWaterSensor::loop() {
 		switch (state) {
 	    case 10:    // start the receiver
 				Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] update" << endl;
-				irrecv.enableIRIn(); // Start the receiver
-				irrecv.resume();
+				//Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] update raw results "<< (results.value, HEX) << endl;
+				irrecv.enableIRIn();
+				//delay(100);
+				//irrecv.resume();
+				irrecv.resume(); // Receive the next value
 				tstate = millis();
 				state = 20;
 	      break;
-	    case 20:    //
-				if (irrecv.decode(&results)) {
-			    Serial.println(results.value, HEX);
-			    irrecv.disableIRIn(); // disableIRIn
-					state = 30;
-			  }
-	      break;
+
+			case 20:    //
+			if (irrecv.decode(&results)) {
+				//Serial.println(results.value, HEX);
+				result = (results.value,HEX) ;
+				Serial.println(results.value, DEC);
+				Serial.println(results.value, HEX);
+				state = 30;
+			}
+      break;
+
+
 			case 30:
+					Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] raw results "<< (results.value) << " lengt / type " << results.bits << " / "<< results.decode_type << endl;
+					//irrecv.disableIRIn(); // disableIRIn
+					#define TO_HEX(i) (i <= 9 ? '0' + i : 'A' - 10 + i)
+
+unsigned int res[9];
+
+if ((results.value) <= 0xFFFFFFFF)
+{
+    res[0] = TO_HEX((((results.value, HEX) & 0xF0000000) >> 28));
+		res[1] = TO_HEX((((results.value, HEX) & 0x0F000000) >> 24));
+		res[2] = TO_HEX((((results.value, HEX) & 0x00F00000) >> 20));
+		res[3] = TO_HEX((((results.value, HEX) & 0x000F0000) >> 16));
+		res[4] = TO_HEX((((results.value, HEX) & 0x0000F000) >> 12));
+    res[5] = TO_HEX((((results.value, HEX) & 0x00000F00) >> 8));
+    res[6] = TO_HEX((((results.value, HEX) & 0x000000F0) >> 4));
+    res[7] = TO_HEX(((results.value, HEX) & 0x0000000F));
+    res[8] = '\0';
+
+}
+
+//result.toCharArray(ch, 50) ;
+//ultoa((results.value,DEC), ch, 10);
+
+					//dtostrf((results.value, HEX), 10, 0, ch);
+
+
+					Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] extracted results "<< res[0] << " " << res[1] << " " << res[2] << " " << res[3] << " "<< res[4] << " " << res[5] << " " << res[6] << " " << res[7]<< endl;
+					//	setProperty("temperature").send(String(temp).c_str());
+					//	setProperty("level").send(String(level).c_str());
+
+
+					//state = 30;
+
+
 					lastLoopUpdate = millis();
 					state = 10;
 				break;
 	  }
 
 
-	}
+
+
 
 
 
@@ -68,7 +110,7 @@ void Node_SerialSolarWaterSensor::loop() {
 		lastLoopSensor = millis();
 	}
 */
-
+}
 } // loop
 
 void Node_SerialSolarWaterSensor::setDebug(bool debug) {

@@ -19,7 +19,35 @@
 	"dependencies": [{
 		"name": "Homie",
     "version": "https://github.com/marvinroger/homie-esp8266.git#develop"
-	}],
-	"examples": "examples/*.ino",
+	},
+  {
+    "name": "DallasTemperature",
+    "frameworks": "Arduino",
+		"authors":
+        [
+            "Miles Burton",
+            "Guil Barros"
+        ]
+  },
+  {
+    "name": "HampelFilter",
+    "version": "https://github.com/yves-ledermann/HampelFilter.git"
+  },
+	{
+		"name": "IRremoteESP8266",
+		"frameworks": "Arduino",
+		"authors":
+        [
+            "Ken Shirriff",
+            "Sebastien Warin"
+        ]
+
+	},
+	{
+		"name": "RemoteDebug",
+		"frameworks": "Arduino"
+	}
+  ],
+	"examples": "examples/*.cpp",
 	"include": "src"
 }

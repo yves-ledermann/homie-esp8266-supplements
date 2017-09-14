@@ -1,12 +1,12 @@
 #include "Node_UltrasonicSerial.hpp"
 
 Node_UltrasonicSerial::Node_UltrasonicSerial(const char* name, const uint8_t PinNumber) :
-		HomieNode("Sensor", "Sensors_t",
+		HomieNode(name, "UltrasonicSerial",
 			[](String property, HomieRange range, String value) { return false; }),
 		_name(name),
 		_PinNumber(PinNumber),
-		swSerial1(PinNumber, NULL),
-		dataBuffer(75.00, 21, 3.50)
+		swSerial1(PinNumber, 0),
+		dataBuffer(30.0, 21, 3.50)
 {
 	if (_debug) {
 		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] constructor finished" << endl;
@@ -16,7 +16,9 @@ Node_UltrasonicSerial::Node_UltrasonicSerial(const char* name, const uint8_t Pin
 void Node_UltrasonicSerial::setup() {
 	swSerial1.begin(9600);
 	serialFlush();
-	Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
+	if (_debug) {
+		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
+	}
 }
 
 void Node_UltrasonicSerial::loop() {
@@ -31,8 +33,16 @@ void Node_UltrasonicSerial::loop() {
 
 	if (millis() - lastLoopSensor >= _Interval) {
 		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "]" << _distance << endl;
-		setProperty("Distance").send(String(_distance).c_str());
-		lastLoopSensor = millis();
+
+		// Update only after 5 loops delay (HampelFilter fill buffer)
+		if (ionstart > 5) {
+			setProperty("Distance").send(String(_distance).c_str());
+			lastLoopSensor = millis();
+		}
+		else {
+			ionstart++;
+		}
+
 	}
 
 

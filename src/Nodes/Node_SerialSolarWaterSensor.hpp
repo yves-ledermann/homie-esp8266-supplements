@@ -21,8 +21,8 @@ class Node_SerialSolarWaterSensor: public HomieNode {
 private:
   String _name;
 	int _PinNumber;
-  bool _debug = true;
-  uint16_t _Interval = 5000UL;
+  bool _debug = false;
+  uint16_t _Interval = 10000UL;
 	uint32_t lastLoopUpdate = 0;
 
   IRrecv irrecv;
