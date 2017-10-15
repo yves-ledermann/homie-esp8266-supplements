@@ -47,6 +47,7 @@
 		"name": "RemoteDebug",
 		"frameworks": "Arduino"
 	}
+
   ],
 	"examples": "examples/*.cpp",
 	"include": "src"
