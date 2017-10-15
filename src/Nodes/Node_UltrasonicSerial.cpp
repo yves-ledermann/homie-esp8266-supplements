@@ -67,7 +67,7 @@ void Node_UltrasonicSerial::serialFlush(){
 void Node_UltrasonicSerial::updateDistance() {
 
 	if (_debug) {
-		//Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] getDistance" << endl;
+		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] getDistance" << endl;
 	}
 	String outText;
 	int distance;
@@ -89,7 +89,8 @@ void Node_UltrasonicSerial::updateDistance() {
 	//
 	while (swSerial1.available()) {
 		// the first byte is ALWAYS 0xFF and I'm not using the checksum (last byte)
-		// if your print the swSerial1.read() data as HEX until it is not available, you will get several measures for the distance (FF-XX-XX-XX-FF-YY-YY-YY-FF-...). I think that is some kind of internal buffer, so I'm only considering the first 4 bytes in the sequence (which I hope that are the most recent! :D )
+		// if your print the swSerial1.read() data as HEX until it is not available, you will get several measures for the distance (FF-XX-XX-XX-FF-YY-YY-YY-FF-...).
+		// I think that is some kind of internal buffer, so I'm only considering the first 4 bytes in the sequence (which I hope that are the most recent! :D )
 		if (bitpos < 4) {
 			mybuffer[bitpos++] = swSerial1.read();
 		} else
@@ -111,7 +112,8 @@ void Node_UltrasonicSerial::updateDistance() {
 		if (_debug) {
 			Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] nitcht anfang der Daten" << endl;
 		}
-		serialFlush();
+		// flush
+		while(Serial.read() > -1);
 		return; // dies nicht der Anfang der Daten
 	};
 
