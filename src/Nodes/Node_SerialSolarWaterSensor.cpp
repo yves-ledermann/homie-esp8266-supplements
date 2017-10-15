@@ -50,15 +50,17 @@ long unsigned int result;
 			if (irrecv.decode(&results)) {
 				//Serial.println(results.value, HEX);
 				result = (results.value,HEX) ;
-				Serial.println(results.value, DEC);
-				Serial.println(results.value, HEX);
+				if (_debug) {
+					Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] decode results: \n" << endl;
+					Homie.getLogger() << "\t" << (long) (results.value, DEC) << "\n" << (long) (results.value, HEX) << "\n\n" << endl;
+				}
 				state = 30;
 			}
       break;
 
 
 			case 30:
-					Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] raw results "<< (results.value) << " lengt / type " << results.bits << " / "<< results.decode_type << endl;
+					Homie.getLogger() << "[Node_SerialSolarWaterSensor-" << _name << "] raw results "<< (long) (results.value) << " lengt / type " << results.bits << " / "<< results.decode_type << endl;
 					//irrecv.disableIRIn(); // disableIRIn
 					#define TO_HEX(i) (i <= 9 ? '0' + i : 'A' - 10 + i)
 
