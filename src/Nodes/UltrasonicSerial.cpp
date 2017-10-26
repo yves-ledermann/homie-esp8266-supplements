@@ -102,18 +102,16 @@ void Node_UltrasonicSerial::updateDistance() {
 		Homie.getLogger() << "Buffer[0]...[3]: " << mybuffer[0] << " " << mybuffer[1] << " " << mybuffer[2] << " " << mybuffer[3] << endl;
 	}
 
-	// flush the receive buffer
-	//serialFlush();
 
 	//
 	// Pufferanalyse
 	//
 	if (mybuffer[00] != 0xff) {
 		if (_debug) {
-			Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] nitcht anfang der Daten" << endl;
+			Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] nicht anfang der Daten" << endl;
 		}
 		// flush
-		while(Serial.read() > -1);
+		serialFlush();
 		return; // dies nicht der Anfang der Daten
 	};
 
@@ -130,7 +128,7 @@ void Node_UltrasonicSerial::updateDistance() {
 	//
 	distance = (mybuffer[01] * 0xff) + mybuffer[02];
 	if (_debug) {
-		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] berechnete Distanz in mm" << distance << endl;
+		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] berechnete Distanz in mm " << distance << endl;
 	}
 
 	//if (distance > 200 || distance < 2000){
@@ -139,7 +137,7 @@ void Node_UltrasonicSerial::updateDistance() {
 
 	_distance = dataBuffer.readMedian();
 	if (_debug) {
-		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] gefilterte Distanz in cm" << dist << endl;
+		Homie.getLogger() << "[Node_UltrasonicSerial-" << _name << "] gefilterte Distanz in cm" << _distance << endl;
 	}
 	return;
 }
