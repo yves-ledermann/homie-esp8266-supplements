@@ -1,4 +1,4 @@
-#include "Node_ds18b20Multi.hpp"
+#include "ds18b20Multi.hpp"
 
 Node_ds18b20Multi::Node_ds18b20Multi(const char* name, const uint8_t PinNumber) :
 		HomieNode("Sensor", "Sensors_t",

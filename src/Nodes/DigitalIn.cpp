@@ -1,4 +1,4 @@
-#include "Node_DigitalIn.hpp"
+#include "DigitalIn.hpp"
 
 
 Node_DigitalIn::Node_DigitalIn(const char* name, const uint8_t PinNumber) :

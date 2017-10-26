@@ -6,7 +6,7 @@
  * Author: Lübbe Onken (http://github.com/luebbe)
  */
 
-#include "ButtonNode.hpp"
+#include "Button.hpp"
 #include <Homie.hpp>
 
 ButtonNode::ButtonNode(const char *name,

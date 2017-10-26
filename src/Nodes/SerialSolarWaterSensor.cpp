@@ -1,4 +1,4 @@
-#include "Node_SerialSolarWaterSensor.hpp"
+#include "SerialSolarWaterSensor.hpp"
 
 Node_SerialSolarWaterSensor::Node_SerialSolarWaterSensor (const char* name, const uint8_t PinNumber) :
 		HomieNode("Sensor", "SerialSolarWater",

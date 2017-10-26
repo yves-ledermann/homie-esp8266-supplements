@@ -1,4 +1,4 @@
-#include "Node_AnalogIn.hpp"
+#include "AnalogIn.hpp"
 
 
 Node_AnalogIn::Node_AnalogIn(const char* name, const uint8_t PinNumber) :

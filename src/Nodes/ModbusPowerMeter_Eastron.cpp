@@ -1,4 +1,4 @@
-#include "Node_ModbusPowerMeter_Eastron.hpp"
+#include "ModbusPowerMeter_Eastron.hpp"
 
 Node_ModbusPowerMeter_Eastron::Node_ModbusPowerMeter_Eastron(const char* name, const uint8_t NodeAddress) :
 	HomieNode(name, "ModbusPowerMeter",
@@ -15,7 +15,7 @@ Node_ModbusPowerMeter_Eastron::Node_ModbusPowerMeter_Eastron(const char* name, c
 
 
 void Node_ModbusPowerMeter_Eastron::setup() {
-	
+
 	Homie.getLogger() << "[Node_ModbusPowerMeter_Eastron-" << _name << "] Setup finished \n\n************************\n\n\n" << endl;
 }
 
@@ -41,11 +41,11 @@ void Node_ModbusPowerMeter_Eastron::setInterval(uint16_t interval) {
 
 void Node_ModbusPowerMeter_Eastron::update() {
 
-	//TODO 
+	//TODO
 
 	if (_debug) {
 		Homie.getLogger() << "[Node_ModbusPowerMeter_Eastron-" << _name << "] update: "
-		
+
 		<< endl;
 	}
 }

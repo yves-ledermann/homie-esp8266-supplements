@@ -1,4 +1,4 @@
-#include "Node_UltrasonicSerial.hpp"
+#include "UltrasonicSerial.hpp"
 
 Node_UltrasonicSerial::Node_UltrasonicSerial(const char* name, const uint8_t PinNumber) :
 		HomieNode(name, "UltrasonicSerial",

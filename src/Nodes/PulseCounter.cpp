@@ -1,4 +1,4 @@
-#include "Node_PulseCounter.hpp"
+#include "PulseCounter.hpp"
 
 Node_PulseCounter::Node_PulseCounter(const char* name, const uint8_t PinNumber, const char* unit, const char* period, PulseSensorProperties prop) :
 		HomieNode(name, "PulseCounter",

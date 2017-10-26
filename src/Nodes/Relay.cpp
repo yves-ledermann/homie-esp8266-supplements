@@ -6,7 +6,7 @@
  * Author: Lübbe Onken (http://github.com/luebbe)
  */
 
-#include "RelayNode.hpp"
+#include "Relay.hpp"
 #include <Homie.hpp>
 
 RelayNode::RelayNode(const char *name, const int relayPin, const int ledPin)
